@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: auto-generate-kong-ingress
+spec:
+  rules:
+    - name: generate-kong-ingress 
+      match:
+        resources:
+          kinds:
+            - Service 
+      generate:
+        kind: Ingress
+        name: "{{request.object.metadata.name}}-ingress"
+        namespace: "{{request.object.metadata.namespace}}"
+        data:
+          metadat:
+            annotations:
+              kubernetes.io/ingress.class: kong

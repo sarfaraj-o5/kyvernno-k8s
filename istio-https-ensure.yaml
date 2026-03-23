@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-istio-https
+spec: 
+  validationFailureAction: Enforce
+  rules:
+    - name: validate-istio-gateway
+      match:
+        resources:
+          kinds:
+            - VirtualService
+      validate:
+        message: "Only HTTPS is allowed for istio VirtualServices."
+        pattern:
+          spec:
+            gateways:
+              - "istio-system/https-gateway"
+
+---

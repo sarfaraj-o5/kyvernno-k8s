@@ -1,0 +1,26 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadat:
+  name: kyverno-repo
+  namespace: flux-system
+spec: 
+  interval: 5m
+  url: https://github.com/kyverno/kyverno.git
+  ref:
+    branch: main
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: kyverno
+  namespace: flux-system
+spec:
+  interval: 10m 
+  path: "./kyverno/install"
+  prune: true
+  sourceRef: 
+    kind: GitRepository
+    name: kyverno-repo
+---
+
+## kubectl get pods -n kyverno

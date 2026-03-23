@@ -1,0 +1,16 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-kong-annotaions
+spec:
+  rules:
+    - name: add-kong-annotaions
+      match:
+        resources:
+          kinds:
+            - Service
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              konghq.com/plugins: "my-plugin"
