@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: audit-istio-gateway
+spec: 
+  validationFailureAction: Audit 
+  rules:
+    - name: enforce-https-gateway
+      match:
+        resources:
+          kinds:
+            - Gateway 
+      validate:
+        message: "All istio Gateway must enforce https."
+        pattern:
+          spec:
+            servers:
+              - port: 
+                  name: "https" 
